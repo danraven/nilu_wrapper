@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
     logger.add(new winston.transports.Console({ format: winston.format.simple() }));
 }
 
-const proxy = new ApiProxy('https://api.nilu.no', new InMemoryStorage(), logger);
+const proxy = new ApiProxy(process.env.API_URL, new InMemoryStorage(), logger);
 
 app.get('/*', async (req, res) => {
     try {

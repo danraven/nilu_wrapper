@@ -1,5 +1,10 @@
 {
+  "name": "nilu-wrapper",
+  "version": "0.5",
+  "author": "Daniel Hollosi <daniel.hollosi.88@gmail.com>",
   "main": "src/index.js",
+  "license": "UNLICENSED",
+  "private": "true",
   "scripts": {
     "start": "node src/index.js",
     "test": "jest"
