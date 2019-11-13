@@ -10,6 +10,7 @@ const logger = winston.createLogger({
     level: 'info',
     format: winston.format.json(),
     transports: [
+        new winston.transports.File({ filename: 'error.log', level: 'error' }),
         new winston.transports.File({ filename: 'server.log' })
     ]
 });
@@ -30,7 +31,7 @@ app.get('/*', async (req, res) => {
         res.send(response.ok ? response.body : response.message);
     } catch (e) {
         logger.error(e.message);
-        res.status(500).send(e.message);
+        res.status(500).send('Internal server error');
     }
 });
 
