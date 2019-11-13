@@ -1,6 +1,6 @@
 const express = require('express');
 const ApiProxy = require('./app/ApiProxy.js');
-const InMemoryStorage = require('./storage/InMemoryStorage.js');
+const StorageFactory = require('./storage/StorageFactory.js');
 const winston = require('winston');
 
 require('dotenv').config();
@@ -18,7 +18,8 @@ if (process.env.NODE_ENV !== 'production') {
     logger.add(new winston.transports.Console({ format: winston.format.simple() }));
 }
 
-const proxy = new ApiProxy(process.env.API_URL, new InMemoryStorage(), logger);
+const proxy = new ApiProxy(process.env.API_URL, StorageFactory.createStorage(process.env.STORAGE_TYPE), logger);
+logger.info('API proxy set up', { type: process.env.STORAGE_TYPE });
 
 app.get('/*', async (req, res) => {
     try {
