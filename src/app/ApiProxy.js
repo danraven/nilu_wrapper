@@ -1,4 +1,4 @@
-const request = require('./request.js');
+const request = require('../helper/request.js');
 
 class ApiProxy {
     constructor(url, storage, logger) {
@@ -15,7 +15,7 @@ class ApiProxy {
         }
         
         this.logger.info('Requested content not yet cached, fetching from third party', { path });
-        const response = await this.storage.set(path, await request(this.apiUrl + path));
+        const response = await this.storage.set(path, await request.get(this.apiUrl + path));
         this.logger.info('Content has been fetched and cached', { path, httpCode: response.code, httpMessage: response.message });
 
         return response;
