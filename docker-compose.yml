@@ -5,7 +5,7 @@ services:
         container_name: cache
         command: ["redis-server", "--appendonly", "yes"]
         volumes:
-            - redis-data:/data
+            - storage-data:/data
         expose:
             - 6379
 
@@ -20,3 +20,5 @@ services:
         environment:
             - NODE_ENV=development
         command: yarn start
+volumes:
+    storage-data:
