@@ -40,7 +40,9 @@ You can run `npm run start` or `yarn start` to start the server once everything 
 
 ## Usage
 
-Any `GET` request with a unique path sent to the app is forwarded to the third-party API and retrieves its response with the payload, MIME type, HTTP code and message. Every subsequent request to the same endpoint retrieves the same response without communicating with the external API, instead it uses the storage to fetch the appropriate data. This applies to every response, including non-200 ones as long as it's from the source API.
+Any `GET` request made to the API is routed through the provided `endpoints.json` file and fetches a response from the third-party API. If no matching endpoint is found, the app returns with a `404` without communicating with the external service. A `400` can also be returned if the request contains an invalid query string.
+If there is a match on the route, the response payload, HTTP code, MIME type and message should be identical to the one received from the external service.
+Every subsequent request to the same endpoint retrieves the same response without communicating with the external API, instead it uses the storage to fetch the appropriate data. This applies to every response, including non-200 ones as long as it's from the source API.
 
 There is currently no way to reset or invalidate elements in the storage beside restarting the app server (if it's `inmemory`) or manually interacting with the storage server (or resetting the container).
 
