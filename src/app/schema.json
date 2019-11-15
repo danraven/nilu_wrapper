@@ -1,0 +1,20 @@
+{
+    "type": "object",
+    "patternProperties": {
+        "^(GET|POST|PUT|DELETE) \/[^ ]*$": {
+            "type": "object",
+            "properties": {
+                "targetPath": {
+                    "type": "string",
+                    "required": true
+                },
+                "queryParams": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

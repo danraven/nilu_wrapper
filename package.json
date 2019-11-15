@@ -6,8 +6,8 @@
   "license": "UNLICENSED",
   "private": true,
   "eslintConfig": {
-      "node": true,
-      "es6": true
+    "node": true,
+    "es6": true
   },
   "scripts": {
     "start": "node src/index.js",
@@ -16,6 +16,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonschema": "^1.2.4",
     "redis": "^2.8.0",
     "winston": "^3.2.1"
   },

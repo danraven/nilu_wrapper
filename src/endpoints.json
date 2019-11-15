@@ -1,0 +1,12 @@
+{
+    "GET /lookup/areas": {
+        "targetPath": "/lookup/areas"
+    },
+    "GET /lookup/stations": {
+        "targetPath": "/lookup/stations",
+        "queryParams": {
+            "area": "string",
+            "utd": "boolean"
+        }
+    }
+}
