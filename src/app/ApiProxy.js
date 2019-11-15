@@ -22,7 +22,8 @@ class ApiProxy {
     async get(path, queryParams = {}) {
         const definition = this.getDefinition("GET", path, queryParams);
         const fullPath = definition.path + definition.queryString;
-        const resolvedFullPath = definition.resolvedFullPath + definition.queryString;
+        const resolvedFullPath = definition.resolvedPath + definition.queryString;
+
         const cached = await this.storage.get(fullPath);
         if (cached) {
             this.logger.info('Cached content found on path, returning', { fullPath, httpCode: cached.code, httpMessage: cached.message });
@@ -30,7 +31,7 @@ class ApiProxy {
         }
 
         this.logger.info('Requested content not yet cached, fetching from third party', { fullPath, resolvedFullPath });
-        const response = await this.storage.set(path, await request.get(this.apiUrl + resolvedFullPath));
+        const response = await this.storage.set(fullPath, await request.get(this.apiUrl + resolvedFullPath));
         this.logger.info('Content has been fetched and cached', { fullPath, resolvedFullPath, httpCode: response.code, httpMessage: response.message });
 
         return response;
@@ -47,7 +48,7 @@ class ApiProxy {
             const schema = {
                 type: "object",
                 properties: {
-                    ...Object.entries(definition.queryParams || {}).reduce((prev, [key, val]) => prev[key] = { type: val }, {})
+                    ...Object.entries(definition.queryParams || {}).reduce((acc, [key, val]) => ({ ...acc, [key]: { type: val } }), {})
                 },
                 additionalProperties: false
             };

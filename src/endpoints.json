@@ -6,7 +6,7 @@
         "targetPath": "/lookup/stations",
         "queryParams": {
             "area": "string",
-            "utd": "boolean"
+            "utd": "string"
         }
     }
 }
