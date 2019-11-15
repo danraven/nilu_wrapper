@@ -1,0 +1,22 @@
+{
+    "GET /lookup/areas": {
+        "targetPath": "/lookup/areas"
+    },
+    "GET /lookup/stations": {
+        "targetPath": "/lookup/stations",
+        "queryParams": {
+            "area": "string",
+            "utd": "string"
+        }
+    },
+    "GET /lookup/components": {
+        "targetPath": "/lookup/components"
+    },
+    "GET /lookup/aqis": {
+        "targetPath": "/lookup/aqis",
+        "queryParams": {
+            "component": "string",
+            "culture": "string"
+        }
+    }
+}

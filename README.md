@@ -9,6 +9,21 @@ Originally intended to be a wrapper around the API of [NILU.no](https://api.nilu
 Create a `.env` file in the root directory using the provided `.env.dist` as a base. It determines the storage driver used for caching, the URL address of the API to communicate with and the port the app should listen to.
 By default it is set up to fetch from [`https://api.nilu.no`](https://api.nilu.no) using a Redis instance, with port `8080` exposed. With the default settings the app should build and run out of the box using `docker-compose` (see below).
 
+### Creating the endpoint definition file
+Create an `endpoints.json` file in the root directory using the provided `endpoints.json.dist`. This file will determine the available endpoints in the service as well as which path should it be mapped on in the external API.
+For instance, you can map `GET /areas` to `GET /lookup/areas` like this:
+
+```json
+{
+    "GET /areas": {
+        "targetPath": "/lookup/areas"
+    }
+}
+```
+
+This way, calling `/areas` will actually try to fetch and cache from `<API_URL>/lookup/areas`. Note that `targetPath` must be defined even if the paths are the same.
+If the endpoint accepts query parameters, they must also be defined using `queryParams` using a `[name]: [type]` object. Only these parameters will be allowed to pass, otherwise the API returns with `400`. All of the provided (if valid) query parameters are also passed to the external API.
+
 ### Installing dependencies
 
 #### Using `docker-compose`
@@ -41,4 +56,4 @@ There are a few test cases for the API proxy module that can be run with `npm ru
 
 * I intended to write the API proxy in a way that its storage can be interchangeable, so a MongoDB or SQL implementation can also be possible. I chose Redis because of the schemaless approach, as the amount of data and the fields vary from endpoint to endpoint.
 * The wrapper currently only works with HTTPS APIs (due to the default options of `https.get`) and only with `GET` endpoints. It shouldn't be overly difficult to expand it and even allow `POST` or `PUT` requests to be forwarded (without caching the result, of course).
-* There is currently no sanitizing on the query string, e.g. `/users?foo=bar&baz=foo`, `/users?baz=foo&foo=bar` and `/users?foo=bar&baz=foo#` produce three API hits and three different cache keys even though the result is going to be the same.
+* The routing in `endpoints.json` could be less strict and more customizable, e.g. allowing for additional query parameters, choosing which parameter to pass to the external APIs, making `targetPath` optional and defaulting to the defined path, etc. It also should be improved to accommodate path variables (like `/user/:id`).
