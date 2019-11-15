@@ -1,5 +1,6 @@
 {
     "type": "object",
+    "additionalProperties": false,
     "patternProperties": {
         "^(GET|POST|PUT|DELETE) \/[^ ]*$": {
             "type": "object",

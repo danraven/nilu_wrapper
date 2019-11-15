@@ -1,6 +1,7 @@
 const request = require('../helper/request.js');
 const NotFoundError = require('../error/NotFoundError.js');
 const InvalidParamsError = require('../error/InvalidParamsError.js');
+const querystring = require('querystring');
 const Validator = require('jsonschema').Validator;
 const schema = require('./schema.json');
 
@@ -60,11 +61,13 @@ class ApiProxy {
             }
         }
 
+        const orderedQueryParams = Object.keys(queryParams).sort().reduce((acc, key) => ({ ...acc, [key]: queryParams[key] }), {});
+
         return {
             method,
             path,
             resolvedPath: definition.targetPath,
-            queryString: hasParams ? '?' + Object.keys(queryParams).sort().map(key => `${key}=${queryParams[key]}`).join('&') : ''
+            queryString: hasParams ? '?' + querystring.stringify(orderedQueryParams) : ''
         };
     }
 }
