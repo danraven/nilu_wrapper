@@ -10,7 +10,7 @@ Create a `.env` file in the root directory using the provided `.env.dist` as a b
 By default it is set up to fetch from [`https://api.nilu.no`](https://api.nilu.no) using a Redis instance, with port `8080` exposed. With the default settings the app should build and run out of the box using `docker-compose` (see below).
 
 ### Creating the endpoint definition file
-Create an `endpoints.json` file in the root directory using the provided `endpoints.json.dist`. This file will determine the available endpoints in the service as well as which path should it be mapped on in the external API.
+Create an `endpoints.json` file in the `src` directory using the provided `src/endpoints.json.dist`. This file will determine the available endpoints in the service as well as which path should it be mapped on in the external API.
 For instance, you can map `GET /areas` to `GET /lookup/areas` like this:
 
 ```json
@@ -56,4 +56,5 @@ There are a few test cases for the API proxy module that can be run with `npm ru
 
 * I intended to write the API proxy in a way that its storage can be interchangeable, so a MongoDB or SQL implementation can also be possible. I chose Redis because of the schemaless approach, as the amount of data and the fields vary from endpoint to endpoint.
 * The wrapper currently only works with HTTPS APIs (due to the default options of `https.get`) and only with `GET` endpoints. It shouldn't be overly difficult to expand it and even allow `POST` or `PUT` requests to be forwarded (without caching the result, of course).
+* `src/endpoints.json.dist` is in kind of an awkward place as it should probably be in the root directory, with the customized `endpoints.json` being copied into the source during build time.
 * The routing in `endpoints.json` could be less strict and more customizable, e.g. allowing for additional query parameters, choosing which parameter to pass to the external APIs, making `targetPath` optional and defaulting to the defined path, etc. It also should be improved to accommodate path variables (like `/user/:id`).
